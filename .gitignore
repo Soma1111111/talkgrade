@@ -1,0 +1,7 @@
+﻿.env
+.env.*
+!.env.example
+node_modules/
+server/*.sqlite
+server/*.sqlite-shm
+server/*.sqlite-wal

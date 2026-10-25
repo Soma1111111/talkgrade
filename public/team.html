@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f4ee">
+  <title>Team grading · TalkGrade</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="team.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="brand"><a class="brand-home" href="/">TalkGrade</a><span class="brand-subtitle">Team workspace</span></h1>
+    <nav class="topbar-status" aria-label="Page actions">
+      <button type="button" id="theme-toggle" aria-label="Switch colour theme">Dark theme</button>
+      <a href="/">Back to grading</a>
+      <span id="team-user"></span>
+      <button id="team-logout" type="button" hidden>Sign out</button>
+    </nav>
+  </header>
+  <main class="work team-page">
+    <section class="panel team-intro" aria-labelledby="team-heading">
+      <p class="team-eyebrow">TALKGRADE · SHARED WORKSPACE</p>
+      <h2 id="team-heading">Grade together. Keep your standards consistent.</h2>
+      <p class="team-intro-copy">Bring your courses, rubrics, and grading team into one calm workspace. Scores stay attributed to each grader, while course owners control access.</p>
+      <p id="team-status" class="team-status" role="status" aria-live="polite">Checking whether team mode is enabled…</p>
+      <div id="team-auth" hidden>
+        <form id="team-login" aria-labelledby="team-login-heading">
+          <p class="team-eyebrow">EMAIL ACCOUNT</p>
+          <h3 id="team-login-heading">Sign in with email</h3>
+          <label for="team-login-email">Email</label>
+          <input id="team-login-email" type="email" required autocomplete="email">
+          <label for="team-login-password">Password</label>
+          <input id="team-login-password" type="password" required autocomplete="current-password">
+          <button class="primary" type="submit">Sign in</button>
+        </form>
+        <details class="team-register">
+          <summary>New to TalkGrade? Create an account</summary>
+          <form id="team-register">
+            <label for="team-register-name">Name</label>
+            <input id="team-register-name" required maxlength="100" autocomplete="name">
+            <label for="team-register-email">Email</label>
+            <input id="team-register-email" type="email" required autocomplete="email">
+            <label for="team-register-password">Password (10–1024 characters)</label>
+            <input id="team-register-password" type="password" required minlength="10" maxlength="1024" autocomplete="new-password">
+            <button class="primary" type="submit">Create account</button>
+          </form>
+        </details>
+      </div>
+    </section>
+    <div id="team-workspace" hidden>
+      <section class="panel team-card team-courses" aria-labelledby="courses-heading">
+        <p class="team-eyebrow">01 · YOUR CLASS</p>
+        <h2 id="courses-heading">Shared courses</h2>
+        <p class="team-card-copy">Choose a course or create a space for your grading team.</p>
+        <label for="team-course">Course</label>
+        <select id="team-course"></select>
+        <form id="team-create-course" class="row">
+          <label for="team-course-name">New course</label>
+          <input id="team-course-name" maxlength="120" required>
+          <button class="primary" type="submit">Create course</button>
+        </form>
+        <p id="team-role" class="team-role"></p>
+        <div id="team-members">
+          <h3>Course members</h3>
+          <ul id="team-member-list"></ul>
+          <form id="team-add-member" class="row">
+            <label for="team-member-email">Existing account email</label>
+            <input id="team-member-email" type="email" required>
+            <label for="team-member-role">Role</label>
+            <select id="team-member-role"><option value="grader">Grader</option><option value="viewer">Viewer</option></select>
+            <button type="submit">Add or update member</button>
+          </form>
+          <p class="muted small">People must create an account before the course owner can add them.</p>
+        </div>
+      </section>
+      <section class="panel team-card team-assignments" aria-labelledby="assignments-heading">
+        <p class="team-eyebrow">02 · THE WORK</p>
+        <h2 id="assignments-heading">Assignments and grading</h2>
+        <p class="team-card-copy">Share a local assignment or connect it to a course assignment, then sync your own grades.</p>
+        <label for="team-assignment">Shared assignment</label>
+        <select id="team-assignment"></select>
+        <div class="team-action-group">
+          <label for="team-local-assignment">Local assignment</label>
+          <select id="team-local-assignment"></select>
+          <div class="row"><button id="team-publish" type="button" disabled>Share assignment</button><button id="team-connect" type="button" disabled>Connect assignment</button></div>
+        </div>
+        <p id="team-sync-status" role="status"></p>
+        <div class="row"><button id="team-sync-grades" type="button" disabled>Sync my scores and feedback</button><button id="team-import-gradings" type="button" disabled>Import grader scores for calibration</button></div>
+        <label for="team-submission">Submission and grader results</label>
+        <select id="team-submission"></select>
+        <div id="team-grading-detail"></div>
+      </section>
+      <section class="panel team-card team-links" aria-labelledby="links-heading">
+        <p class="team-eyebrow">03 · SHARE BACK</p>
+        <h2 id="links-heading">Student feedback links</h2>
+        <p class="team-card-copy">Give a student private access to their feedback. Links expire automatically and can be revoked.</p>
+        <label for="team-link-ttl">Link expires after</label>
+        <div class="row"><input id="team-link-ttl" type="number" min="1" max="365" value="30" aria-label="Link expiration in days"><span class="team-days">days</span><button id="team-create-link" class="primary" type="button" disabled>Create feedback link</button></div>
+        <p id="team-link-status" role="status"></p>
+        <ul id="team-link-list"></ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

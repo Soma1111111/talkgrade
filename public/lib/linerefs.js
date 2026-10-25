@@ -1,0 +1,10 @@
+(function(root){"use strict";
+const UNITS="zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen",TENS="twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety";
+const WORDNUM=`(?:(?:one|two|three|four|five|six|seven|eight|nine)\\s+hundred(?:\\s+(?:and\\s+)?(?:${TENS})(?:[- ](?:${UNITS}))?|\\s+(?:and\\s+)?(?:${UNITS}))?|(?:${TENS})(?:[- ](?:${UNITS}))?|${UNITS}|hundred)`;
+const NUM=`(?:\\d+|${WORDNUM})`;
+function numberWord(value){if(/^\d+$/.test(String(value)))return Number(value);let total=0;String(value||"").toLowerCase().replace(/-/g," ").split(/\s+/).filter(w=>w!=="and").forEach(w=>{if(w in WORDS)total+=WORDS[w];else if(w==="hundred")total=Math.max(1,total)*100;});return total||null;}
+const WORDS={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+function extractLineRefs(text){const out=[],re=new RegExp(`\\b(?:lines?\\s+(${NUM})(?:\\s+(?:to|through|and)\\s+(${NUM})|\\s*-\\s*(${NUM}))?|(?:on\\s+line|at\\s+line|line\\s+number)\\s+(${NUM})|(?:L|ln)\\s*(\\d+))\\b`,"gi");let m;while((m=re.exec(String(text||"")))){const a=numberWord(m[1]||m[4]||m[5]),b=numberWord(m[2]||m[3])||a;if(a)out.push({from:Math.min(a,b),to:Math.max(a,b),start:m.index,end:re.lastIndex});}return out;}
+function splitNotesIntoComments(notes){const split=root.TG_heuristic?.splitClauses||((s)=>s.split(/[.;\n]+/).filter(Boolean)),out=[];split(String(notes||"")).forEach(clause=>extractLineRefs(clause).forEach(ref=>{const text=clause.slice(0,ref.start)+clause.slice(ref.end);out.push({from:ref.from,to:ref.to,text:text.trim().replace(/^[\s,;:-]+/,"").replace(/^\w/,x=>x.toUpperCase())});}));return out;}
+const api={extractLineRefs,splitNotesIntoComments,numberWord};root.TG_linerefs=api;if(typeof module!=="undefined"&&module.exports)module.exports=api;
+})(typeof globalThis!=="undefined"?globalThis:this);
