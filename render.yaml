@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: talkgrade
+    runtime: node
+    plan: free
+    buildCommand: echo "no dependencies to install"
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.23.2
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
+      - key: TEAM_MODE
+        value: "0"
