@@ -101,7 +101,7 @@ function createServer({ env = process.env, fetchImpl, teamDb } = {}) {
     });
   }
 
-  return http.createServer(async (req, res) => {
+  const handler = async (req, res) => {
     const url = new URL(req.url, "http://x");
     try {
       if (teamService && url.pathname.startsWith("/api/")) {
@@ -153,7 +153,10 @@ function createServer({ env = process.env, fetchImpl, teamDb } = {}) {
     } catch (error) {
       return sendJson(res, 500, { error: "Something went wrong on the server." });
     }
-  });
+  };
+  const server = http.createServer(handler);
+  server.handler = handler;
+  return server;
 }
 
 if (require.main === module) {
